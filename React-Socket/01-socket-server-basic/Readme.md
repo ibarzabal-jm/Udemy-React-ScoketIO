@@ -37,5 +37,10 @@ io.on('connection', ( socket ) => {
 
 Luego lo pasamos a clases para que sea más reutilizable y manejable.
 
-Instalamos dotenv
+Instalamos dotenv, creamos variales de entorno.
 
+
+Desplegamos en Heroku. Para ver el server:
+```
+heroku logs -n 1000 --tail
+```
