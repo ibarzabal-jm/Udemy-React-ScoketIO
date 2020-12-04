@@ -1,9 +1,11 @@
 import React from 'react'
+import { UiProvider } from './context/UiContext'
+import { RouterPage } from './pages/RouterPage'
 
 export const TicketApp = () => {
     return (
-        <div>
-            <h1>Hola mundo</h1>
-        </div>
+        <UiProvider>
+           <RouterPage />
+        </UiProvider>
     )
 }
