@@ -1,48 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react'
-import mapboxgl from 'mapbox-gl'
-
- 
-mapboxgl.accessToken = 'pk.eyJ1IjoianVhbm1haWJhciIsImEiOiJja2lpMzhyNWkwamJ5MnFwZWo2NjE3NWNiIn0.PiRK4Nx5CxDEBGhqqSemYQ';
+import React, { useEffect }  from 'react'
+import { useMapbox } from '../hooks/useMapbox';
 
 const puntoInicial = {
     lng: -58.4928,
     lat: -34.5781,
-    zoom: 17
+    zoom: 16.11
 }
 
 export const MapaPage = () => {
 
-    const mapaDiv = useRef();
-    const [ mapa , setMapa] = useState();
-    const [ coords, setCoords] = useState( puntoInicial )
+    const { coords, setRef, nuevoMarcador$, movimientoMarcador$ } = useMapbox( puntoInicial );
 
-    useEffect(() => {
-        const map = new mapboxgl.Map({
-            container: mapaDiv.current,
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [ puntoInicial.lng, puntoInicial.lat ],
-            zoom: puntoInicial.zoom
-        });
-
-        setMapa( map )
-    }, [])
-
-
+    // Nuevo Marcador
     useEffect(() => {
 
-        // pregunto si existe, tarda más que el useEffect de arriba.
-        mapa?.on('move', ()=>{
-            const {lng, lat } = mapa.getCenter();
-            setCoords({
-                lng: lng.toFixed(4),
-                lat: lat.toFixed(4),
-                zoom: mapa.getZoom().toFixed(2),
-            })
+        nuevoMarcador$.subscribe( marcador => {
+            console.log('MapaPAge')
+            console.log(marcador);
+        })
+
+    }, [nuevoMarcador$]);
+    
+    // Nuevo Marcador
+    useEffect(() => {
+
+        movimientoMarcador$.subscribe( marcador => {
+            console.log(marcador.id);
         });
 
-        return mapa?.off('move');
+    }, [movimientoMarcador$]);
 
-    }, [mapa])
 
     return (
         <>
@@ -50,7 +37,7 @@ export const MapaPage = () => {
                 Lng: { coords.lng } | lat: { coords.lat } | zoom: { coords.zoom }
             </div>
             <div
-                ref={ mapaDiv }
+                ref={ setRef }
                 className="mapContainer"
             >
             </div>
