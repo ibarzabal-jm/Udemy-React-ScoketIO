@@ -12,4 +12,4 @@ npm install mapbox-gl --save
 
 instalamos uuid porque necesitamos un identificador unico para mover el marcador.
 
-instalamos rxjs
+instalamos rxjs para estar pendientes de los marcadores, así poder ver sus movimientos facilmente desde fuera del useMapbox.js
