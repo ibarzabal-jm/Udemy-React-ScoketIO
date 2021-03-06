@@ -5,10 +5,22 @@ const crearUsuario = async (req, res = response) => {
   try {
     const { email, password } = req.body;
 
-    res.json({
-      email,
-      password,
-    });
+    const existeEmail = await Usuario.findOne({ email });
+    if (existeEmail) {
+      return res.status(400).json({
+        ok: false,
+        msg: "El correo ya existe",
+      });
+    }
+
+    // Todo: encriptar contraseña
+
+    // Guardar usuario en BD
+    const usuario = new Usuario(req.body);
+    await usuario.save();
+
+    res.json({usuario});
+
   } catch (error) {
     console.log(error);
     res.status(500).json({
